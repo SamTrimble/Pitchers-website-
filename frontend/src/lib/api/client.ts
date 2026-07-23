@@ -15,7 +15,7 @@ export async function apiRequest<T>(pathname: string, options: RequestOptions = 
     ...init,
     headers: {
       "Content-Type": "application/json",
-      ...(accessToken ? { Authorization: `****** } : {}),
+      ...(accessToken ? { Authorization: "Bearer " + accessToken } : {}),
       ...headers,
     },
   });

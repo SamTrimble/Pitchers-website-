@@ -1,19 +1,20 @@
+from collections.abc import Callable
 from typing import Annotated
 from uuid import UUID
 
 from fastapi import Depends, Header
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, Field
 
 from app.core.config import Settings, get_settings
 from app.core.errors import ApiError, AuthenticationRequiredError
-from app.integrations.auth.supabase import SupabaseJWTVerifier, TokenPayload
+from app.integrations.auth.supabase import SupabaseJWTVerifier
 
 
 class AuthenticatedUser(BaseModel):
     subject: UUID | None = None
-    email: EmailStr | None = None
-    organization_ids: list[UUID] = []
-    permissions: list[str] = []
+    email: str | None = None
+    organization_ids: list[UUID] = Field(default_factory=list)
+    permissions: list[str] = Field(default_factory=list)
     raw_token: str
 
 
@@ -39,7 +40,7 @@ async def get_current_user(
     )
 
 
-def require_permission(permission: str):
+def require_permission(permission: str) -> Callable[[AuthenticatedUser], AuthenticatedUser]:
     def dependency(user: AuthenticatedUser = Depends(get_current_user)) -> AuthenticatedUser:
         if permission not in user.permissions:
             raise ApiError(

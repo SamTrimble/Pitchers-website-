@@ -1,0 +1,14 @@
+fastapi==0.139.2
+uvicorn==0.51.0
+sqlalchemy==2.0.51
+alembic==1.18.5
+pydantic==2.13.4
+pydantic-settings==2.14.2
+psycopg==3.3.4
+
+[dev]
+httpx==0.28.1
+mypy==2.3.0
+pytest==9.1.1
+pytest-cov==7.1.0
+ruff==0.16.0

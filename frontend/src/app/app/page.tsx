@@ -1,3 +1,5 @@
+"use client";
+
 import { PermissionGuard } from "@/components/permission-guard";
 import { useSession } from "@/lib/auth/session-provider";
 
@@ -22,7 +24,7 @@ export default function DashboardPage() {
         <div className="panel card-grid">
           <div>
             <h3>Organization context</h3>
-            <p className="muted">Active org: {session.activeOrganizationId}</p>
+            <p className="muted">Active org: {session.organizations[0]?.name ?? "Unavailable"}</p>
           </div>
           <div>
             <h3>API readiness</h3>

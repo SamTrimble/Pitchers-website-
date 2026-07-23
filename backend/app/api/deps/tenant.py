@@ -1,7 +1,6 @@
-from typing import Annotated
 from uuid import UUID
 
-from fastapi import Depends, Header
+from fastapi import Depends, Request
 from pydantic import BaseModel
 
 from app.api.deps.auth import AuthenticatedUser, get_current_user
@@ -29,11 +28,11 @@ def build_tenant_context(user: AuthenticatedUser, organization_id: UUID) -> Tena
 
 
 async def get_tenant_context(
-    organization_id_header: Annotated[str | None, Header(alias="X-Organization-Id")] = None,
+    request: Request,
     user: AuthenticatedUser = Depends(get_current_user),
     settings: Settings = Depends(get_settings),
 ) -> TenantContext:
-    raw_org_id = organization_id_header
+    raw_org_id = request.headers.get(settings.organization_header)
     if raw_org_id is None:
         raise TenantContextError(
             f"The {settings.organization_header} header is required for tenant-aware routes.",

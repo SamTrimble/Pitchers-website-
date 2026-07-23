@@ -21,7 +21,11 @@ services:
     env_file:
       - .env.example
     environment:
-      DATABASE_URL: ******postgres:5432/athleteos
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: athleteos
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
       REDIS_URL: redis://redis:6379/0
       FRONTEND_URL: http://frontend:3000
       BACKEND_URL: http://backend:8000
