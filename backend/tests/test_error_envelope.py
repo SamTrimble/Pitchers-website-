@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
+from app.core.config import get_settings
 from app.core.errors import ApiError, register_error_handlers
 from app.core.request_context import RequestContextMiddleware
-from app.core.config import get_settings
 
 
 def test_api_error_envelope_shape() -> None:

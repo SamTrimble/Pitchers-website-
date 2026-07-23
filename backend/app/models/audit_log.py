@@ -1,8 +1,9 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID
 
 from sqlalchemy import DateTime, ForeignKey, String, Text
-from sqlalchemy.dialects.postgresql import JSONB, UUID as PGUUID
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import UUID as PGUUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -22,6 +23,6 @@ class AuditLog(UUIDPrimaryKeyMixin, TimestampMixin, AuditMixin, OrganizationScop
     metadata_json: Mapped[dict[str, str]] = mapped_column(JSONB, default=dict, nullable=False)
     occurred_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(UTC),
         nullable=False,
     )

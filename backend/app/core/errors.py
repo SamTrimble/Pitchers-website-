@@ -1,6 +1,6 @@
 from collections.abc import Mapping
 from http import HTTPStatus
-from typing import Any
+from typing import Any, cast
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -69,7 +69,11 @@ async def api_error_handler(_: Request, error: ApiError) -> JSONResponse:
 
 
 async def http_error_handler(_: Request, error: StarletteHTTPException) -> JSONResponse:
-    phrase = HTTPStatus(error.status_code).phrase if error.status_code in HTTPStatus._value2member_map_ else "HTTP error"
+    phrase = (
+        HTTPStatus(error.status_code).phrase
+        if error.status_code in HTTPStatus._value2member_map_
+        else "HTTP error"
+    )
     api_error = ApiError(
         code="HTTP_ERROR",
         message=str(error.detail or phrase),
@@ -89,6 +93,6 @@ async def validation_error_handler(_: Request, error: RequestValidationError) ->
 
 
 def register_error_handlers(app: FastAPI) -> None:
-    app.add_exception_handler(ApiError, api_error_handler)
-    app.add_exception_handler(StarletteHTTPException, http_error_handler)
-    app.add_exception_handler(RequestValidationError, validation_error_handler)
+    app.add_exception_handler(ApiError, cast(Any, api_error_handler))
+    app.add_exception_handler(StarletteHTTPException, cast(Any, http_error_handler))
+    app.add_exception_handler(RequestValidationError, cast(Any, validation_error_handler))

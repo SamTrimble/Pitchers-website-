@@ -1,13 +1,10 @@
 {
   "name": "athleteos-platform",
   "private": true,
-  "workspaces": [
-    "frontend"
-  ],
   "scripts": {
-    "dev:frontend": "npm run dev --workspace frontend",
-    "lint:frontend": "npm run lint --workspace frontend",
-    "typecheck:frontend": "npm run typecheck --workspace frontend",
-    "test:frontend": "npm run test --workspace frontend"
+    "dev:frontend": "npm --prefix frontend run dev",
+    "lint:frontend": "npm --prefix frontend run lint",
+    "typecheck:frontend": "npm --prefix frontend run typecheck",
+    "test:frontend": "npm --prefix frontend run test"
   }
 }
